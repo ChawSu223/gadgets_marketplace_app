@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:gadgets_marketplace/bloc/auth/app_auth_bloc.dart';
 import 'package:gadgets_marketplace/bloc/explore/cubits/show_search_category_cubit.dart';
 import 'package:gadgets_marketplace/bloc/home/blocs/cubits/bottom_nav_cubit.dart';
@@ -12,10 +13,11 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  await dotenv.load(fileName: ".env");
+
   await Supabase.initialize(
-    url: "https://hkvkogexqerbikcrjyka.supabase.co",
-    anonKey:
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImhrdmtvZ2V4cWVyYmlrY3JqeWthIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUwMzkyMDMsImV4cCI6MjEwMDYxNTIwM30.AD23C5ZjGpWPGmvjHf2UrGtJD22G5QLcl-ue9EcNG90",
+    url: dotenv.env['SUPABASE_URL']!,
+    anonKey: dotenv.env['SUPABASE_ANON_KEY']!,
   );
   runApp(
     MultiBlocProvider(
