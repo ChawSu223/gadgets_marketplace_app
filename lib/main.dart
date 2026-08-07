@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:gadgets_marketplace/bloc/auth/app_auth_bloc.dart';
-import 'package:gadgets_marketplace/bloc/explore/cubits/show_search_category_cubit.dart';
-import 'package:gadgets_marketplace/bloc/home/blocs/cubits/bottom_nav_cubit.dart';
-import 'package:gadgets_marketplace/bloc/home/blocs/cubits/search_header_cubit.dart';
-import 'package:gadgets_marketplace/bloc/home/blocs/cubits/update_index_cubit.dart';
-import 'package:gadgets_marketplace/bloc/home/blocs/product_filter_bloc.dart';
-import 'package:gadgets_marketplace/views/app.dart';
+import 'package:gadgets_marketplace/core/constants/supabase_client.dart';
+import 'package:gadgets_marketplace/features/auth/bloc/app_auth_bloc.dart';
+import 'package:gadgets_marketplace/features/details/bloc/product_detail_bloc.dart';
+import 'package:gadgets_marketplace/features/details/repositories/product_detail_repositories.dart';
+import 'package:gadgets_marketplace/features/explore/bloc/show_search_category_cubit.dart';
+import 'package:gadgets_marketplace/features/home/bloc/product_filter_bloc.dart';
+import 'package:gadgets_marketplace/features/home/cubit/bottom_nav_cubit.dart';
+import 'package:gadgets_marketplace/features/home/cubit/search_header_cubit.dart';
+import 'package:gadgets_marketplace/features/home/cubit/update_index_cubit.dart';
+import 'package:gadgets_marketplace/screens/app.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 Future<void> main() async {
@@ -18,6 +21,9 @@ Future<void> main() async {
   await Supabase.initialize(
     url: dotenv.env['SUPABASE_URL']!,
     anonKey: dotenv.env['SUPABASE_ANON_KEY']!,
+  );
+  final ProductDetailRepositories repo = ProductDetailRepositories(
+    supabase: supabase,
   );
   runApp(
     MultiBlocProvider(
@@ -34,6 +40,9 @@ Future<void> main() async {
         BlocProvider<BottomNavCubit>(create: ((context) => BottomNavCubit())),
         BlocProvider<ShowSearchCategoryCubit>(
           create: ((context) => ShowSearchCategoryCubit()),
+        ),
+        BlocProvider<ProductDetailBloc>(
+          create: ((context) => ProductDetailBloc(repo: repo)),
         ),
       ],
       child: const GadgetMarketplaceApp(),

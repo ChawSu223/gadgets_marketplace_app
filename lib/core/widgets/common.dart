@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gadgets_marketplace/core/widgets/image_frame.dart';
+import 'package:gadgets_marketplace/core/widgets/asset_image_frame.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class Common {

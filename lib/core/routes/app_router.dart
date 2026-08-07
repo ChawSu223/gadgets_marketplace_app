@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:gadgets_marketplace/views/details/product_details_screen.dart';
-import 'package:gadgets_marketplace/views/explore/explore_screen.dart';
-import 'package:gadgets_marketplace/views/home/home_screen.dart';
-import 'package:gadgets_marketplace/views/main_screen.dart';
+import 'package:gadgets_marketplace/features/details/screens/product_details_screen.dart';
+import 'package:gadgets_marketplace/features/explore/screen/explore_screen.dart';
+import 'package:gadgets_marketplace/features/home/screens/home_screen.dart';
+import 'package:gadgets_marketplace/screens/main_screen.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../views/auth/login_screen.dart';
-import '../../views/auth/register_screen.dart';
+import '../../features/auth/screens/login_screen.dart';
+import '../../features/auth/screens/register_screen.dart';
 import '../constants/supabase_client.dart';
 
 class AppRouter {
@@ -44,9 +44,12 @@ class AppRouter {
         builder: (context, state) => const ExploreScreen(),
       ),
       GoRoute(
-        path: '/details',
-        name: 'details',
-        builder: (context, state) => ProductDetailsScreen(),
+        path: '/details/:id',
+        name: 'details/:id',
+        builder: (context, state) {
+          final id = state.pathParameters['id'];
+          return ProductDetailsScreen(productId: id ?? "");
+        },
       ),
     ],
 
