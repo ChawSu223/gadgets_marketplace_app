@@ -32,12 +32,6 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
 
-    // _scrollController.addListener(
-    //   () => context.read<SearchHeaderCubit>().updateShowAppbarSearchIcon(
-    //     _scrollController.offset,
-    //   ),
-    // );
-
     context.read<UpdateIndexCubit>().updateIndex(0);
     context.read<ProductFilterBloc>().add(
       FetchProductEvent(filter: ProductFilter()),
@@ -46,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void dispose() {
-    // _scrollController.dispose();
+    _scrollController.dispose();
     _searchFocusNode.dispose();
     super.dispose();
   }
@@ -54,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.background2,
 
       body: Padding(
         padding: EdgeInsetsGeometry.only(
@@ -67,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
           controller: _scrollController,
           slivers: [
             SliverAppBar(
-              backgroundColor: AppColors.background,
+              backgroundColor: AppColors.background2,
               titleSpacing: 0,
               pinned: true,
               scrolledUnderElevation: 0,

@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gadgets_marketplace/core/constants/app_colors.dart';
 import 'package:gadgets_marketplace/core/constants/app_text_styles.dart';
+import 'package:gadgets_marketplace/features/cart/bloc/cart_item_bloc.dart';
+import 'package:gadgets_marketplace/features/cart/bloc/cart_item_event.dart';
+import 'package:gadgets_marketplace/features/cart/screens/cart_screen.dart';
 import 'package:gadgets_marketplace/features/explore/screen/explore_screen.dart';
 import 'package:gadgets_marketplace/features/home/cubit/bottom_nav_cubit.dart';
 import 'package:gadgets_marketplace/features/home/screens/home_screen.dart';
@@ -23,22 +26,9 @@ class _MainScreenState extends State<MainScreen> {
     const HomeScreen(),
     const ExploreScreen(),
     const Center(child: Text('Chat Screen', style: TextStyle(fontSize: 24))),
-    const Center(child: Text('Cart Screen', style: TextStyle(fontSize: 24))),
+    const CartScreen(),
     const Center(child: Text('Profile Screen', style: TextStyle(fontSize: 24))),
   ];
-
-  // void _onItemTapped(int index) {
-  //   setState(() {
-  //     _selectedIndex =
-  //         index; // Tab ပြောင်းလိုက်တိုင်း Index ကို Update လုပ်ပေးပါ
-  //   });
-  // }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,13 +43,18 @@ class _MainScreenState extends State<MainScreen> {
       bottomNavigationBar: BlocBuilder<BottomNavCubit, int>(
         builder: (context, state) {
           return NavigationBar(
+            labelPadding: EdgeInsets.only(top: 4),
+            // shadowColor: AppColors.background1,
             onDestinationSelected: (value) {
               context.read<BottomNavCubit>().updateNavIndex(value);
+              if (value == 3) {
+                context.read<CartItemBloc>().add(FetchCartItemsEvent());
+              }
             },
             indicatorColor: AppColors.background,
             backgroundColor: AppColors.background,
-            height: 60,
-            labelTextStyle: WidgetStatePropertyAll(AppTextStyles.caption),
+            height: 70,
+            labelTextStyle: WidgetStatePropertyAll(AppTextStyles.body),
             selectedIndex: state,
             // onDestinationSelected: _onItemTapped,
             elevation: 8,

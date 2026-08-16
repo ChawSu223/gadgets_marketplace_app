@@ -62,10 +62,10 @@ class ProductCard extends StatelessWidget {
                       ),
                       SizedBox(height: 4.h),
                       Text(
-                        '\$${product.price.toStringAsFixed(2)}',
-                        style: AppTextStyles.h2.copyWith(
+                        'MMK ${product.price.toStringAsFixed(2)}',
+                        style: AppTextStyles.h1.copyWith(
                           fontSize: 14.sp,
-                          color: AppColors.primary,
+                          color: AppColors.secondary,
                         ),
                       ),
                     ],

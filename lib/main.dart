@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:gadgets_marketplace/core/constants/supabase_client.dart';
 import 'package:gadgets_marketplace/features/auth/bloc/app_auth_bloc.dart';
+import 'package:gadgets_marketplace/features/cart/bloc/cart_item_bloc.dart';
+import 'package:gadgets_marketplace/features/cart/models/cart_item_model.dart';
 import 'package:gadgets_marketplace/features/details/bloc/product_detail_bloc.dart';
 import 'package:gadgets_marketplace/features/details/repositories/product_detail_repositories.dart';
 import 'package:gadgets_marketplace/features/explore/bloc/show_search_category_cubit.dart';
@@ -11,6 +13,7 @@ import 'package:gadgets_marketplace/features/home/cubit/bottom_nav_cubit.dart';
 import 'package:gadgets_marketplace/features/home/cubit/search_header_cubit.dart';
 import 'package:gadgets_marketplace/features/home/cubit/update_index_cubit.dart';
 import 'package:gadgets_marketplace/screens/app.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 Future<void> main() async {
@@ -25,6 +28,10 @@ Future<void> main() async {
   final ProductDetailRepositories repo = ProductDetailRepositories(
     supabase: supabase,
   );
+
+  await Hive.initFlutter();
+  Hive.registerAdapter(CartItemModelAdapter());
+  await Hive.openBox<CartItemModel>('cart_box');
   runApp(
     MultiBlocProvider(
       providers: [
@@ -44,6 +51,7 @@ Future<void> main() async {
         BlocProvider<ProductDetailBloc>(
           create: ((context) => ProductDetailBloc(repo: repo)),
         ),
+        BlocProvider<CartItemBloc>(create: ((context) => CartItemBloc())),
       ],
       child: const GadgetMarketplaceApp(),
     ),

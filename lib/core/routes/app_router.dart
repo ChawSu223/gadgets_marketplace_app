@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gadgets_marketplace/features/cart/screens/cart_screen.dart';
 import 'package:gadgets_marketplace/features/details/screens/product_details_screen.dart';
 import 'package:gadgets_marketplace/features/explore/screen/explore_screen.dart';
 import 'package:gadgets_marketplace/features/home/screens/home_screen.dart';
@@ -49,6 +50,13 @@ class AppRouter {
         builder: (context, state) {
           final id = state.pathParameters['id'];
           return ProductDetailsScreen(productId: id ?? "");
+        },
+      ),
+      GoRoute(
+        path: '/cart',
+        name: 'cart',
+        builder: (context, state) {
+          return CartScreen();
         },
       ),
     ],

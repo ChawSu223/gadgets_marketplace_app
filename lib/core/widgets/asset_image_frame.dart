@@ -4,18 +4,28 @@ import 'package:gadgets_marketplace/features/home/widgets/error_widgets.dart';
 class ImageFrame extends StatelessWidget {
   String imagePath;
   EdgeInsets? margin;
+  double? width;
+  double? height;
+  BorderRadiusGeometry? borderRadius;
 
-  ImageFrame({super.key, required this.imagePath, this.margin});
+  ImageFrame({
+    super.key,
+    required this.imagePath,
+    this.margin,
+    this.height,
+    this.width,
+    this.borderRadius,
+  });
 
   @override
   Widget build(BuildContext context) {
     if (margin == null) {
       return ClipRRect(
-        borderRadius: BorderRadiusGeometry.circular(20),
+        borderRadius: borderRadius ?? BorderRadiusGeometry.circular(20),
         child: Image.asset(
           imagePath,
-          width: 500,
-          height: 300,
+          width: width ?? 500,
+          height: height ?? 300,
           fit: BoxFit.cover,
           errorBuilder: (context, error, stackTrace) {
             return ImageErrorWidget();
@@ -26,11 +36,11 @@ class ImageFrame extends StatelessWidget {
       return Container(
         padding: margin,
         child: ClipRRect(
-          borderRadius: BorderRadiusGeometry.circular(20),
+          borderRadius: borderRadius ?? BorderRadiusGeometry.circular(20),
           child: Image.asset(
             imagePath,
-            width: 500,
-            height: 300,
+            width: width ?? 500,
+            height: height ?? 300,
             fit: BoxFit.cover,
             errorBuilder: (context, error, stackTrace) {
               return ImageErrorWidget();

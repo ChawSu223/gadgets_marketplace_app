@@ -6,6 +6,9 @@ import 'package:gadgets_marketplace/core/constants/app_colors.dart';
 import 'package:gadgets_marketplace/core/constants/app_text_styles.dart';
 import 'package:gadgets_marketplace/core/routes/app_router.dart';
 import 'package:gadgets_marketplace/core/widgets/network_image_frame.dart';
+import 'package:gadgets_marketplace/features/cart/bloc/cart_item_bloc.dart';
+import 'package:gadgets_marketplace/features/cart/bloc/cart_item_event.dart';
+import 'package:gadgets_marketplace/features/cart/bloc/cart_item_state.dart';
 import 'package:gadgets_marketplace/features/details/bloc/product_detail_bloc.dart';
 import 'package:gadgets_marketplace/features/details/bloc/product_detail_event.dart';
 import 'package:gadgets_marketplace/features/details/bloc/product_detail_state.dart';
@@ -13,8 +16,11 @@ import 'package:gadgets_marketplace/features/home/bloc/product_filter.dart';
 import 'package:gadgets_marketplace/features/home/bloc/product_filter_bloc.dart';
 import 'package:gadgets_marketplace/features/home/bloc/product_filter_event.dart';
 import 'package:gadgets_marketplace/features/home/bloc/product_filter_state.dart';
+import 'package:gadgets_marketplace/features/home/cubit/bottom_nav_cubit.dart';
 import 'package:gadgets_marketplace/features/home/cubit/update_index_cubit.dart';
+import 'package:gadgets_marketplace/features/home/widgets/notification_widget.dart';
 import 'package:gadgets_marketplace/features/home/widgets/product_card.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -74,9 +80,19 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 icon: Icon(CupertinoIcons.back, size: 28),
               ),
               actions: [
-                IconButton(
-                  onPressed: () {},
-                  icon: Icon(LucideIcons.heart, size: 28),
+                BlocBuilder<CartItemBloc, CartItemState>(
+                  builder: (context, state) {
+                    return NotificationWidget(
+                      count: state.cartItems.length,
+                      onPressed: () {
+                        context.read<BottomNavCubit>().updateNavIndex(3);
+                        while (context.canPop()) {
+                          context.pop();
+                        }
+                      },
+                      iconData: LucideIcons.shoppingCart,
+                    );
+                  },
                 ),
               ],
             ),
@@ -199,17 +215,34 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         dense: true,
                         minTileHeight: 40,
                         title: Text("Specifications", style: AppTextStyles.h2),
-                        children: [
-                          Text(
-                            state.product.specs.toString(),
-                            style: AppTextStyles.body,
-                          ),
-                        ],
+
+                        // children: [
+                        //   Text(
+                        //     "${state.product.specs.keys.toString()} : ${state.product.specs.values.toString()}",
+                        //     style: AppTextStyles.body,
+                        //   ),
+                        // ],
+                        expandedAlignment: Alignment.centerLeft,
+                        children: state.product.specs.entries
+                            .map(
+                              (e) => Text(
+                                "${e.key} : ${e.value}",
+                                style: AppTextStyles.body,
+                              ),
+                            )
+                            .toList(),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(top: 24),
                         child: ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            context.read<CartItemBloc>().add(
+                              AddToCartEvent(
+                                productModel: state.product,
+                                quantity: 1,
+                              ),
+                            );
+                          },
                           style: AppButtonStyles.fullButtonStyle,
                           child: Text(
                             "Add to Cart",
@@ -293,9 +326,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     );
   }
 
-  List<Color> colors = [
-    AppColors.primary,
-    AppColors.textPrimary,
-    AppColors.textSecondary,
-  ];
+  // List<Color> colors = [
+  //   AppColors.primary,
+  //   AppColors.textPrimary,
+  //   AppColors.textSecondary,
+  // ];
 }

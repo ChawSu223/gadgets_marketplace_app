@@ -4,8 +4,18 @@ import 'package:gadgets_marketplace/features/home/widgets/error_widgets.dart';
 class NetworkImageFrame extends StatelessWidget {
   String imagePath;
   EdgeInsets? margin;
+  double? width;
+  double? height;
+  double? borderRadius;
 
-  NetworkImageFrame({super.key, required this.imagePath, this.margin});
+  NetworkImageFrame({
+    super.key,
+    required this.imagePath,
+    this.margin,
+    this.width,
+    this.height,
+    this.borderRadius,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -26,11 +36,11 @@ class NetworkImageFrame extends StatelessWidget {
       return Container(
         padding: margin,
         child: ClipRRect(
-          borderRadius: BorderRadiusGeometry.circular(20),
+          borderRadius: BorderRadiusGeometry.circular(borderRadius ?? 20),
           child: Image.network(
             imagePath,
-            width: 500,
-            height: 300,
+            width: width ?? 500,
+            height: height ?? 300,
             fit: BoxFit.cover,
             errorBuilder: (context, error, stackTrace) {
               return ImageErrorWidget();

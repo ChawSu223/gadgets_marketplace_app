@@ -8,6 +8,7 @@ import 'package:gadgets_marketplace/features/home/bloc/product_filter_event.dart
 import 'package:gadgets_marketplace/features/home/widgets/notification_widget.dart';
 import 'package:gadgets_marketplace/features/home/widgets/search_bar_widget.dart';
 import 'package:gadgets_marketplace/features/home/widgets/search_icon_widget.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import '../cubit/search_header_cubit.dart';
 
@@ -41,8 +42,7 @@ class AppBarWidget extends StatelessWidget {
           expandedHeight: 110.0, // App Bar Height
           scrolledUnderElevation: 0,
           titleSpacing: 0,
-          backgroundColor: AppColors.background,
-
+          backgroundColor: AppColors.background2,
           title: Text(
             title,
             style: AppTextStyles.title2,
@@ -80,7 +80,14 @@ class AppBarWidget extends StatelessWidget {
           ),
 
           actions: [
-            if (isShowNotiIcon) NotificationWidget() else Container(),
+            if (isShowNotiIcon)
+              NotificationWidget(
+                count: 1,
+                onPressed: () {},
+                iconData: LucideIcons.bell,
+              )
+            else
+              Container(),
             if (state.showAppbarSearchIcon)
               SearchIconWidget(onTap: onTapAppBarSearchIcon),
           ],

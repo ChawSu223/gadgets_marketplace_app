@@ -7,7 +7,7 @@ class ProductModel {
   final String category;
   final Map<String, dynamic> specs;
 
-  ProductModel({
+  const ProductModel({
     required this.id,
     required this.name,
     required this.description,

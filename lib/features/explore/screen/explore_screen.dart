@@ -51,7 +51,7 @@ class _ExploreScreenState extends State<ExploreScreen> {
     final formKey = GlobalKey<FormState>();
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: AppColors.background2,
       body: Padding(
         padding: EdgeInsetsGeometry.only(
           left: 16,
